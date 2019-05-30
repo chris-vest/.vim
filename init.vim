@@ -16,6 +16,7 @@ set backspace=indent,eol,start  " Makes backspace key more powerful.
 set showcmd                     " Show me what I'm typing
 set showmode                    " Show current mode.
 
+set clipboard=unnamedplus       " Use system clipboard
 set noswapfile                  " Don't use swapfile
 set nobackup					          " Don't create annoying backup files
 set nowritebackup
@@ -496,8 +497,11 @@ let NERDTreeShowHidden=1
 
 let NERDTreeIgnore=['\.vim$', '\~$', '\.git$', '.DS_Store']
 
+" Open nerdtree when vim starts
+autocmd vimenter * NERDTree
+
 " Close nerdtree and vim on close file
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " ==================== vim-json ====================
 
@@ -577,16 +581,6 @@ if !g:remoteSession
   let g:airline_powerline_fonts=1
 endif
 
-" =================== rust.vim ========================
-
-" Enable automatic running of :RustFmt when a buffer is saved.
-let g:rustfmt_autosave = 1
-
-" The :RustPlay command will send the current selection, or if nothing is
-" selected the current buffer, to the Rust playpen. Then copy the url to the
-" clipboard.
-let g:rust_clip_command = 'xclip -selection clipboard'
-
 " =================== vim-terraform ========================
 
 " Allow vim-terraform to override your .vimrc indentation syntax for matching files.
@@ -596,3 +590,22 @@ let g:rust_clip_command = 'xclip -selection clipboard'
 let g:terraform_fmt_on_save=1
 
 " vim:ts=2:sw=2:et
+
+" =================== easmotion ============================
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
